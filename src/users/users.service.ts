@@ -1,4 +1,3 @@
-// src/users/users.service.ts
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -6,9 +5,19 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(email: string, hashedPassword: string) {
+  async createUser(data: {
+    email: string;
+    password: string;
+    fullname: string;
+    referenceId: string;
+  }) {
     return this.prisma.user.create({
-      data: { email, password: hashedPassword },
+      data: {
+        email: data.email,
+        password: data.password,
+        fullname: data.fullname,
+        referenceId: data.referenceId,
+      },
     });
   }
 

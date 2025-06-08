@@ -12,4 +12,11 @@ export class SignupDto {
       'Password must include at least 1 uppercase letter, 1 lowercase letter, 1 digit, 1 special character, and be at least 8 characters long',
   })
   password: string;
+
+  @IsString()
+  @MinLength(2)
+  fullname: string;
+
+  @IsString()
+  referenceId: string;
 }

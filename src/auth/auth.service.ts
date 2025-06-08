@@ -1,4 +1,3 @@
-// src/auth/auth.service.ts
 import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -11,14 +10,20 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async signup(email: string, password: string) {
+  async signup(email: string, password: string, fullname: string, referenceId: string) {
     const existing = await this.usersService.findByEmail(email);
     if (existing) {
       throw new ConflictException('Email is already registered');
     }
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = await this.usersService.createUser(email, hashed);
+    const user = await this.usersService.createUser({
+      email,
+      password: hashed,
+      fullname,
+      referenceId,
+    });
+
     return { message: 'User created', userId: user.id };
   }
 
